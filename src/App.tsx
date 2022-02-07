@@ -1,24 +1,33 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useContext } from 'react';
+import { Routes, Route, Navigate, useNavigate } from 'react-router-dom';
+import { Grid, CircularProgress } from '@mui/material';
+import { AuthContext } from 'context/AuthContext';
+import Login from 'views/login/Login';
+import Dashboard from 'views/dashboard/Dashboard';
+import Layout from 'components/shared/Layout';
 
 function App() {
+  const navigate = useNavigate();
+  const { authenticated, autoLoginFinished } = useContext(AuthContext);
+
+  function renderInitialLoader() {
+    return (
+      <Grid container alignItems="center" direction="row" justifyContent="center" sx={{ height: '100%' }}>
+        <CircularProgress />
+      </Grid>
+    );
+  }
+
+  if (!autoLoginFinished) return renderInitialLoader();
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="app">
+      <Routes>
+        <Route path="/" element={<Layout authenticated={authenticated} />}>
+          <Route index element={authenticated ? <Navigate to="/login" /> : <Dashboard />} />
+          <Route path="/login" element={<Login />} />
+        </Route>
+      </Routes>
     </div>
   );
 }
