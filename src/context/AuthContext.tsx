@@ -1,34 +1,40 @@
 import React, { useState, useEffect } from 'react';
+import AuthAPI from 'api/auth';
 
 interface IAuthContext {
   authenticated: boolean;
   autoLoginFinished: boolean;
-  requestOtpCode: () => Promise<number>;
+  requestOtpCode: (userId: string) => Promise<string | undefined>;
+  attemptToLogin: (userId: string, code: string) => Promise<string | undefined>;
 }
 
 export const AuthContext = React.createContext<IAuthContext>({} as IAuthContext);
-
-const pause = () => new Promise((resolve) => setTimeout(resolve, 3000));
 
 const AuthContextProvider = ({ children }: any) => {
   const [authenticated, setAuthenticated] = useState<boolean>(false);
   const [autoLoginFinished, setAutoLoginFinished] = useState<boolean>(false);
 
   async function autoLoginAttempt() {
-    console.log('autologin attempt');
-    await pause();
-    console.log('autologin done');
+    const { success } = await AuthAPI.checkAccess();
 
-    setAuthenticated(false);
+    if (success) setAuthenticated(true);
     setAutoLoginFinished(true);
   }
 
-  async function requestOtpCode() {
-    console.log('requesting otp code');
-    await pause();
-    console.log('otp code requested');
+  async function requestOtpCode(userId: string) {
+    const { error } = await AuthAPI.requestOtpCode(userId);
 
-    return 1234;
+    return error;
+  }
+
+  async function attemptToLogin(userId: string, code: string) {
+    const { success, error, data } = await AuthAPI.attemptToLogin(userId, code);
+
+    if (!success) return error;
+
+    localStorage.setItem('userId', data.user_id);
+    localStorage.setItem('accessToken', data.access_token);
+    setAuthenticated(true);
   }
 
   useEffect(() => {
@@ -41,6 +47,7 @@ const AuthContextProvider = ({ children }: any) => {
         authenticated,
         autoLoginFinished,
         requestOtpCode,
+        attemptToLogin,
       }}
     >
       {children}

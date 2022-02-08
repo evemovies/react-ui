@@ -1,27 +1,31 @@
-import { FormEvent, useState, useContext } from 'react';
-import { Box, TextField, Button } from '@mui/material';
+import React, { FormEvent, useState, useContext } from 'react';
+import { Navigate } from 'react-router-dom';
+import { Box, TextField, Button, Snackbar } from '@mui/material';
 import { AuthContext } from 'context/AuthContext';
 
 function Login() {
-  const { requestOtpCode } = useContext(AuthContext);
+  const { authenticated, requestOtpCode, attemptToLogin } = useContext(AuthContext);
   const [otpCodeRequested, setOtpCodeRequested] = useState<boolean>(false);
+  const [otpCodeError, setOtpCodeError] = useState<string>('');
+  const [loginError, setLoginError] = useState<string>('');
   const [userId, setUserId] = useState<string>('');
   const [userCode, setUserCode] = useState<string>('');
 
   async function handleRequestOtpCode(e: FormEvent) {
     e.preventDefault();
 
-    await requestOtpCode();
+    const error = await requestOtpCode(userId);
 
-    setOtpCodeRequested(true);
-
-    console.log('requesting otp code');
+    if (error) setOtpCodeError(error);
+    else setOtpCodeRequested(true);
   }
 
-  function handleLoginAttempt(e: FormEvent) {
+  async function handleLoginAttempt(e: FormEvent) {
     e.preventDefault();
 
-    console.log('handling login');
+    const error = await attemptToLogin(userId, userCode);
+
+    if (error) setLoginError(error);
   }
 
   function renderRequestOtpCodeForm() {
@@ -34,12 +38,20 @@ function Login() {
             variant="outlined"
             size="small"
             value={userId}
+            error={otpCodeError.length > 0}
             onChange={(e) => setUserId(e.target.value)}
           />
           <Button sx={{ width: '100%' }} type="submit" variant="contained">
             Request code
           </Button>
         </Box>
+        <Snackbar
+          open={otpCodeError.length > 0}
+          autoHideDuration={5000}
+          anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+          message={otpCodeError}
+          onClose={() => setOtpCodeError('')}
+        />
       </form>
     );
   }
@@ -54,6 +66,7 @@ function Login() {
             variant="outlined"
             size="small"
             value={userId}
+            disabled
             onChange={(e) => setUserId(e.target.value)}
           />
           <TextField
@@ -61,16 +74,26 @@ function Login() {
             label="Code"
             variant="outlined"
             value={userCode}
+            error={loginError.length > 0}
             size="small"
             onChange={(e) => setUserCode(e.target.value)}
           />
           <Button sx={{ width: '100%' }} type="submit" variant="contained">
             Login
           </Button>
+          <Snackbar
+            open={loginError.length > 0}
+            autoHideDuration={5000}
+            anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+            message={loginError}
+            onClose={() => setLoginError('')}
+          />
         </Box>
       </form>
     );
   }
+
+  if (authenticated) return <Navigate to="/" />;
 
   return <Box sx={{ width: '250px' }}>{otpCodeRequested ? renderLoginForm() : renderRequestOtpCodeForm()}</Box>;
 }

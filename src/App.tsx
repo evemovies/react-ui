@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Routes, Route, Navigate, useNavigate } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import { Grid, CircularProgress } from '@mui/material';
 import { AuthContext } from 'context/AuthContext';
 import Login from 'views/login/Login';
@@ -7,7 +7,6 @@ import Dashboard from 'views/dashboard/Dashboard';
 import Layout from 'components/shared/Layout';
 
 function App() {
-  const navigate = useNavigate();
   const { authenticated, autoLoginFinished } = useContext(AuthContext);
 
   function renderInitialLoader() {
@@ -24,7 +23,7 @@ function App() {
     <div className="app">
       <Routes>
         <Route path="/" element={<Layout authenticated={authenticated} />}>
-          <Route index element={authenticated ? <Navigate to="/login" /> : <Dashboard />} />
+          <Route index element={authenticated ? <Dashboard /> : <Navigate to="/login" />} />
           <Route path="/login" element={<Login />} />
         </Route>
       </Routes>
