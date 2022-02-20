@@ -1,9 +1,12 @@
 import React, { useContext } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
-import { Grid, CircularProgress } from '@mui/material';
+import { Box, CircularProgress } from '@mui/material';
 import { AuthContext } from 'context/AuthContext';
-import Login from 'views/login/Login';
-import Dashboard from 'views/dashboard/Dashboard';
+import Login from 'views/Login';
+import Dashboard from 'views/Dashboard';
+import AddMovie from 'views/AddMovie';
+import Settings from 'views/Settings';
+import Movie from 'views/Movie';
 import Layout from 'components/shared/Layout';
 
 function App() {
@@ -11,9 +14,9 @@ function App() {
 
   function renderInitialLoader() {
     return (
-      <Grid container alignItems="center" direction="row" justifyContent="center" sx={{ height: '100%' }}>
+      <Box display="flex" alignItems="center" justifyContent="center" sx={{ height: '100%' }}>
         <CircularProgress />
-      </Grid>
+      </Box>
     );
   }
 
@@ -25,6 +28,9 @@ function App() {
         <Route path="/" element={<Layout authenticated={authenticated} />}>
           <Route index element={authenticated ? <Dashboard /> : <Navigate to="/login" />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/add-movie" element={<AddMovie />} />
+          <Route path="/movie/:movieId" element={<Movie />} />
+          <Route path="/settings" element={<Settings />} />
         </Route>
       </Routes>
     </div>

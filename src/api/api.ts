@@ -16,8 +16,8 @@ instance.defaults.headers.common['Content-Type'] = 'application/json';
 if (accessToken) instance.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
 
 instance.interceptors.response.use(
-  (response) => response,
-  (error) => {
+  response => response,
+  error => {
     return {
       data: {
         success: false,

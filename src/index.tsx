@@ -5,6 +5,7 @@ import { CssBaseline, ThemeProvider, createTheme } from '@mui/material';
 import { cyan, pink } from '@mui/material/colors';
 import 'api/api';
 import AuthContextProvider from 'context/AuthContext';
+import UserContextProvider from 'context/UserContext';
 import GlobalStyles from './globalStyles';
 import App from './App';
 
@@ -23,11 +24,13 @@ ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
       <AuthContextProvider>
-        <ThemeProvider theme={theme}>
-          <CssBaseline />
-          <GlobalStyles />
-          <App />
-        </ThemeProvider>
+        <UserContextProvider>
+          <ThemeProvider theme={theme}>
+            <CssBaseline />
+            <GlobalStyles />
+            <App />
+          </ThemeProvider>
+        </UserContextProvider>
       </AuthContextProvider>
     </BrowserRouter>
   </React.StrictMode>,
