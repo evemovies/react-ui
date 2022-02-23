@@ -1,12 +1,11 @@
 import { useNavigate } from 'react-router-dom';
 import { Box, Card, CardContent, CardMedia } from '@mui/material';
-import { IMovie } from 'models/Movie';
 import { IMoviesListProps } from './types';
 
 function MoviesList({ moviesList }: IMoviesListProps) {
   const navigate = useNavigate();
 
-  function handleMovieClick(movieId: IMovie['id']) {
+  function handleMovieClick(movieId: string) {
     navigate(`/movie/${movieId}`);
   }
 

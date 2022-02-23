@@ -6,6 +6,7 @@ import { cyan, pink } from '@mui/material/colors';
 import 'api/api';
 import AuthContextProvider from 'context/AuthContext';
 import UserContextProvider from 'context/UserContext';
+import MoviesContextProvider from 'context/MoviesContext';
 import GlobalStyles from './globalStyles';
 import App from './App';
 
@@ -25,11 +26,13 @@ ReactDOM.render(
     <BrowserRouter>
       <AuthContextProvider>
         <UserContextProvider>
-          <ThemeProvider theme={theme}>
-            <CssBaseline />
-            <GlobalStyles />
-            <App />
-          </ThemeProvider>
+          <MoviesContextProvider>
+            <ThemeProvider theme={theme}>
+              <CssBaseline />
+              <GlobalStyles />
+              <App />
+            </ThemeProvider>
+          </MoviesContextProvider>
         </UserContextProvider>
       </AuthContextProvider>
     </BrowserRouter>

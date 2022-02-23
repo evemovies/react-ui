@@ -6,3 +6,9 @@ export interface IMovie {
   year: number;
   language: 'en' | 'ru';
 }
+
+export interface IMovieSearchParams {
+  title: string;
+  year: number;
+  language: 'en' | 'ru';
+}

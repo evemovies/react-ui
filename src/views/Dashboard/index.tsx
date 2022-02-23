@@ -1,20 +1,25 @@
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import { Box, CircularProgress } from '@mui/material';
-import { UserContext } from 'context/UserContext';
+import { MoviesContext } from 'context/MoviesContext';
 import MoviesList from 'components/shared/MoviesList';
 
 function Dashboard() {
-  const { user, userLoading } = useContext(UserContext);
+  const { movies, getMovies, moviesLoading } = useContext(MoviesContext);
 
-  if (userLoading) {
+  useEffect(() => {
+    getMovies();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  if (moviesLoading) {
     return <CircularProgress />;
-  } else if (!user) {
+  } else if (!movies) {
     return <div>Some error has occurred</div>;
   }
 
   return (
     <Box sx={{ width: '100%', height: '100%', padding: '20px' }}>
-      <MoviesList moviesList={user.observableMovies} />
+      <MoviesList moviesList={movies} />
     </Box>
   );
 }

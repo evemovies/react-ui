@@ -13,6 +13,14 @@ const UserContextProvider = ({ children }: any) => {
   const [user, setUser] = useState<IUser>();
   const [userLoading, setUserLoading] = useState<boolean>(true);
 
+  useEffect(() => {
+    const userId = localStorage.getItem('userId');
+
+    if (userId) {
+      getUser(userId);
+    }
+  }, []);
+
   async function getUser(userId: string) {
     setUserLoading(true);
     const { success, data } = await UserAPI.getUser(userId);
@@ -28,14 +36,6 @@ const UserContextProvider = ({ children }: any) => {
 
     setUserLoading(false);
   }
-
-  useEffect(() => {
-    const userId = localStorage.getItem('userId');
-
-    if (userId) {
-      getUser(userId);
-    }
-  }, []);
 
   return (
     <UserContext.Provider
