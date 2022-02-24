@@ -7,7 +7,7 @@ interface IMoviesContext {
   movies: IMovie[];
   moviesLoading: boolean;
   getMovies: (params?: IMovieSearchParams) => Promise<void>;
-  getSingleMovie: (movieId: string) => Promise<void>;
+  getSingleMovie: (movieId: string) => IMovie;
 }
 
 export const MoviesContext = React.createContext<IMoviesContext>({} as IMoviesContext);
@@ -37,16 +37,18 @@ const MoviesContextProvider = ({ children }: any) => {
     setMoviesLoading(false);
   }
 
-  async function getSingleMovie(movieId: string) {
-    setMoviesLoading(true);
-
-    const { success, data } = await MoviesAPI.getSingleMovie(movieId);
-
-    if (success) {
-      setMovies([data]);
-    }
-
-    setMoviesLoading(false);
+  function getSingleMovie(movieId: string): IMovie {
+    // TODO: improve single movie retrieval
+    return movies.find(movie => movie.id === movieId)!;
+    // setMoviesLoading(true);
+    //
+    // const { success, data } = await MoviesAPI.getSingleMovie(movieId);
+    //
+    // if (success) {
+    //   setMovies([data]);
+    // }
+    //
+    // setMoviesLoading(false);
   }
 
   return (

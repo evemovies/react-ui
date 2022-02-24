@@ -1,14 +1,15 @@
-import { useContext, useEffect } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { CircularProgress } from '@mui/material';
+import { IMovie } from 'models/Movie';
 import { UserContext } from 'context/UserContext';
 import { MoviesContext } from 'context/MoviesContext';
 import SingleMovie from 'components/shared/SingleMovie';
 
 function Movie() {
   const { movieId } = useParams();
-  const { movies, moviesLoading, getSingleMovie } = useContext(MoviesContext);
+  const { getSingleMovie } = useContext(MoviesContext);
   const { user } = useContext(UserContext);
+  const [movie, setMovie] = useState<IMovie>();
 
   function handleAddMovie(movieId: string) {
     console.log('handling add movie');
@@ -19,18 +20,15 @@ function Movie() {
   }
 
   useEffect(() => {
-    getSingleMovie(movieId!);
+    const movie = getSingleMovie(movieId!);
+    setMovie(movie);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [movieId]);
 
-  if (moviesLoading) {
-    return <CircularProgress />;
-  } else if (movies.length !== 1) {
-    return <div>Some error has occurred</div>;
-  }
+  if (!movie) return <div>Some error has occurred</div>;
 
-  return <SingleMovie movie={movies[0]} user={user!} onAddMovie={handleAddMovie} onRemoveMovie={handleRemoveMovie} />;
+  return <SingleMovie movie={movie} user={user!} onAddMovie={handleAddMovie} onRemoveMovie={handleRemoveMovie} />;
 }
 
 export default Movie;

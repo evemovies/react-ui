@@ -1,3 +1,4 @@
+import { IMovie } from 'models/Movie';
 import Api, { IAPIResponse } from './api';
 
 const userApi = {
@@ -11,6 +12,20 @@ const userApi = {
     const data = await Api.get(`/api/v1/users/${userId}/movies`);
 
     return data.data;
+  },
+
+  async addMovie(userId: string, movie: IMovie) {
+    const data = await Api.post(`/api/v1/users/${userId}/add-movie`, {
+      ...movie,
+    });
+
+    return data.data;
+  },
+
+  async removeMovie(userId: string, movieId: string) {
+    const data = await Api.post(`/api/v1/users/${userId}/remove-movie`, {
+      movieId,
+    });
   },
 };
 
