@@ -11,11 +11,8 @@ function Dashboard() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  if (moviesLoading) {
-    return <CircularProgress />;
-  } else if (!movies) {
-    return <div>Some error has occurred</div>;
-  }
+  if (moviesLoading) return <CircularProgress />;
+  else if (!movies) return <div>Some error has occurred</div>;
 
   return (
     <Box sx={{ width: '100%', height: '100%', padding: '20px' }}>

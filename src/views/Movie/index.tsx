@@ -8,15 +8,15 @@ import SingleMovie from 'components/shared/SingleMovie';
 function Movie() {
   const { movieId } = useParams();
   const { getSingleMovie } = useContext(MoviesContext);
-  const { user } = useContext(UserContext);
+  const { user, addMovie, removeMovie } = useContext(UserContext);
   const [movie, setMovie] = useState<IMovie>();
 
-  function handleAddMovie(movieId: string) {
-    console.log('handling add movie');
+  function handleAddMovie() {
+    addMovie(movie!);
   }
 
-  function handleRemoveMovie(movieId: string) {
-    console.log('handling remove movie');
+  function handleRemoveMovie() {
+    removeMovie(movie!.id);
   }
 
   useEffect(() => {
@@ -26,6 +26,7 @@ function Movie() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [movieId]);
 
+  // TODO: add an endpoint to get single movie from the API
   if (!movie) return <div>Some error has occurred</div>;
 
   return <SingleMovie movie={movie} user={user!} onAddMovie={handleAddMovie} onRemoveMovie={handleRemoveMovie} />;
