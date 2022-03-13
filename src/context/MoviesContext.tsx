@@ -4,16 +4,19 @@ import UserApi from 'api/user';
 import MoviesAPI from 'api/movies';
 
 interface IMoviesContext {
-  movies: IMovie[];
+  userMovies: IMovie[];
+  foundMovies: IMovie[];
   moviesLoading: boolean;
-  getMovies: (params?: IMovieSearchParams) => Promise<void>;
+  searchMovies: (params: IMovieSearchParams) => Promise<void>;
+  getUserMovies: () => Promise<void>;
   getSingleMovie: (movieId: string) => IMovie;
 }
 
 export const MoviesContext = React.createContext<IMoviesContext>({} as IMoviesContext);
 
 const MoviesContextProvider = ({ children }: any) => {
-  const [movies, setMovies] = useState<IMovie[]>([]);
+  const [userMovies, setUserMovies] = useState<IMovie[]>([]);
+  const [foundMovies, setFoundMovies] = useState<IMovie[]>([]);
   const [userId, setUserId] = useState<string>('0');
   const [moviesLoading, setMoviesLoading] = useState<boolean>(false);
 
@@ -23,15 +26,25 @@ const MoviesContextProvider = ({ children }: any) => {
     setUserId(savedUserId);
   }, []);
 
-  async function getMovies(params?: IMovieSearchParams) {
+  async function searchMovies(params: IMovieSearchParams) {
     setMoviesLoading(true);
 
-    const fetchMoviesMethod = params ? MoviesAPI.searchMovies.bind(null, params) : UserApi.getUserMovies.bind(null, userId);
-
-    const { success, data } = await fetchMoviesMethod();
+    const { success, data } = await MoviesAPI.searchMovies(params);
 
     if (success) {
-      setMovies(data);
+      setFoundMovies(data);
+    }
+
+    setMoviesLoading(false);
+  }
+
+  async function getUserMovies() {
+    setMoviesLoading(true);
+
+    const { success, data } = await UserApi.getUserMovies(userId);
+
+    if (success) {
+      setUserMovies(data);
     }
 
     setMoviesLoading(false);
@@ -39,7 +52,10 @@ const MoviesContextProvider = ({ children }: any) => {
 
   function getSingleMovie(movieId: string): IMovie {
     // TODO: improve single movie retrieval
-    return movies.find(movie => movie.id === movieId)!;
+    const userMoviesIds = new Set(userMovies.map(movie => movie.id));
+    const allMovies = [...userMovies, ...foundMovies.filter(movie => !userMoviesIds.has(movie.id))];
+
+    return allMovies.find(movie => movie.id === movieId)!;
     // setMoviesLoading(true);
     //
     // const { success, data } = await MoviesAPI.getSingleMovie(movieId);
@@ -54,9 +70,11 @@ const MoviesContextProvider = ({ children }: any) => {
   return (
     <MoviesContext.Provider
       value={{
-        movies,
+        userMovies,
+        foundMovies,
         moviesLoading,
-        getMovies,
+        getUserMovies,
+        searchMovies,
         getSingleMovie,
       }}
     >

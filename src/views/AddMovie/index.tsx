@@ -4,13 +4,13 @@ import { MoviesContext } from 'context/MoviesContext';
 import MovieList from 'components/shared/MoviesList';
 
 function AddMovie() {
-  const { moviesLoading, movies, getMovies } = useContext(MoviesContext);
+  const { moviesLoading, foundMovies, searchMovies } = useContext(MoviesContext);
   const [searchTerm, setSearchTerm] = useState<string>('');
 
   function handleMovieSearch() {
     const year = new Date().getFullYear();
 
-    getMovies({ title: searchTerm, language: 'en', year });
+    searchMovies({ title: searchTerm, language: 'en', year });
   }
 
   if (moviesLoading) return <CircularProgress />;
@@ -31,7 +31,7 @@ function AddMovie() {
         </Button>
       </Box>
 
-      <MovieList moviesList={movies} />
+      <MovieList moviesList={foundMovies} />
     </Box>
   );
 }
