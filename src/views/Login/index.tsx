@@ -39,7 +39,7 @@ function Login() {
             size="small"
             value={userId}
             error={otpCodeError.length > 0}
-            onChange={(e) => setUserId(e.target.value)}
+            onChange={e => setUserId(e.target.value)}
           />
           <Button sx={{ width: '100%' }} type="submit" variant="contained">
             Request code
@@ -67,7 +67,7 @@ function Login() {
             size="small"
             value={userId}
             disabled
-            onChange={(e) => setUserId(e.target.value)}
+            onChange={e => setUserId(e.target.value)}
           />
           <TextField
             sx={{ width: '100%', mb: '30px' }}
@@ -76,7 +76,7 @@ function Login() {
             value={userCode}
             error={loginError.length > 0}
             size="small"
-            onChange={(e) => setUserCode(e.target.value)}
+            onChange={e => setUserCode(e.target.value)}
           />
           <Button sx={{ width: '100%' }} type="submit" variant="contained">
             Login

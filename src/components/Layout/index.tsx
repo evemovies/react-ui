@@ -1,14 +1,16 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Outlet, useNavigate, useLocation } from 'react-router-dom';
 import { Box, Drawer, List, ListItemIcon, ListItemText } from '@mui/material';
-import { Dashboard, AddBox, SettingsApplications } from '@mui/icons-material';
+import { Dashboard, AddBox, SettingsApplications, Logout } from '@mui/icons-material';
+import { AuthContext } from 'context/AuthContext';
 import sidebarBackground from 'assets/sidebar-background.png';
 import { ILayoutProps, IMenuItem } from './types';
-import { StyledListItemButton } from './styles';
+import { StyledListItemButton, StyledLogoutButton } from './styles';
 
 const drawerWidth = '300px';
 
 function Layout({ authenticated }: ILayoutProps) {
+  const { logoutUser } = useContext(AuthContext);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -31,7 +33,7 @@ function Layout({ authenticated }: ILayoutProps) {
       <Drawer
         anchor="left"
         variant="permanent"
-        sx={{ position: 'fixed', width: drawerWidth }}
+        sx={{ width: drawerWidth }}
         PaperProps={{
           sx: {
             width: drawerWidth,
@@ -41,7 +43,15 @@ function Layout({ authenticated }: ILayoutProps) {
         }}
       >
         <Box sx={{ mt: '30px', width: '100%', textAlign: 'center', fontSize: '25px', color: '#fff', fontWeight: 'bold' }}>EveMovies</Box>
-        <List>{drawerMenu()}</List>
+        <List sx={{ position: 'relative', height: '100%' }}>
+          {drawerMenu()}
+          <StyledLogoutButton onClick={logoutUser}>
+            <ListItemIcon sx={{ color: '#fff' }}>
+              <Logout />
+            </ListItemIcon>
+            <ListItemText primary="Logout" />
+          </StyledLogoutButton>
+        </List>
       </Drawer>
     );
   };
@@ -51,8 +61,9 @@ function Layout({ authenticated }: ILayoutProps) {
       <Box
         display="flex"
         alignItems="center"
-        justifyContent="center"
-        sx={{ ml: drawerWidth, width: `100% - ${drawerWidth}`, height: '100%' }}
+        justifyContent="flex-start"
+        flexDirection="column"
+        sx={{ ml: drawerWidth, width: 'calc(100% - 300px)', minHeight: '100%' }}
       >
         <Outlet />
         {authenticated && renderDrawerMenu()}

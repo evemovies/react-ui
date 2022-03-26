@@ -6,6 +6,7 @@ interface IAuthContext {
   autoLoginFinished: boolean;
   requestOtpCode: (userId: string) => Promise<string | undefined>;
   attemptToLogin: (userId: string, code: string) => Promise<string | undefined>;
+  logoutUser: () => Promise<void>;
 }
 
 export const AuthContext = React.createContext<IAuthContext>({} as IAuthContext);
@@ -34,7 +35,14 @@ const AuthContextProvider = ({ children }: any) => {
 
     localStorage.setItem('userId', data.user_id);
     localStorage.setItem('accessToken', data.access_token);
-    setAuthenticated(true);
+    window.location.reload();
+  }
+
+  async function logoutUser() {
+    await AuthAPI.logout();
+
+    localStorage.clear();
+    window.location.reload();
   }
 
   useEffect(() => {
@@ -48,6 +56,7 @@ const AuthContextProvider = ({ children }: any) => {
         autoLoginFinished,
         requestOtpCode,
         attemptToLogin,
+        logoutUser,
       }}
     >
       {children}

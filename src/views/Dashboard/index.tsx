@@ -15,7 +15,7 @@ function Dashboard() {
   else if (!userMovies) return <div>Some error has occurred</div>;
 
   return (
-    <Box sx={{ width: '100%', height: '100%', padding: '20px' }}>
+    <Box sx={{ width: '100%', padding: '20px' }}>
       <MoviesList moviesList={userMovies} />
     </Box>
   );

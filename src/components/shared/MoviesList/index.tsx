@@ -17,7 +17,7 @@ function MoviesList({ moviesList }: IMoviesListProps) {
       gap={4}
       alignItems="start"
       alignContent="start"
-      sx={{ width: '100%', height: '100%' }}
+      sx={{ width: '100%' }}
     >
       {moviesList.map(movie => (
         <Box key={movie.id} onClick={() => handleMovieClick(movie.id)}>

@@ -33,7 +33,7 @@ function App() {
   }
 
   function renderNonAuthorizedRoutes() {
-    return <Route path="*" element={<Login />}></Route>;
+    return <Route index element={<Login />}></Route>;
   }
 
   if (!autoLoginFinished) return renderInitialLoader();

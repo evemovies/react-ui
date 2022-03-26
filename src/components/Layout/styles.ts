@@ -13,4 +13,10 @@ export const StyledListItemButton = styled(ListItemButton)(({ theme }) => ({
   },
 }));
 
-export {};
+export const StyledLogoutButton = styled(StyledListItemButton)(({ theme }) => ({
+  position: 'absolute',
+  left: '50%',
+  bottom: 0,
+  margin: '20px 0',
+  transform: 'translateX(-50%)',
+}));

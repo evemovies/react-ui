@@ -23,6 +23,10 @@ const authApi = {
 
     return data.data;
   },
+
+  async logout(): Promise<void> {
+    await Api.post('/api/v1/auth/logout');
+  },
 };
 
 export default authApi;
