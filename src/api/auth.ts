@@ -3,7 +3,7 @@ import Api, { IAPIResponse } from './api';
 const authApi = {
   async requestOtpCode(userId: string): Promise<IAPIResponse> {
     const data = await Api.post('/api/v1/auth/request-otp-code', {
-      _id: userId,
+      id: userId,
     });
 
     return data.data;
@@ -11,7 +11,7 @@ const authApi = {
 
   async attemptToLogin(userId: string, code: string): Promise<IAPIResponse> {
     const data = await Api.post('/api/v1/auth/login', {
-      _id: userId,
+      id: userId,
       OTPCode: code,
     });
 

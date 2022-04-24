@@ -31,7 +31,7 @@ const UserContextProvider = ({ children }: any) => {
     if (success) {
       const formattedUser: IUser = {
         ...data,
-        observableMovies: data.observableMovies.map((movie: any) => ({ ...movie, id: movie._id || movie.id })),
+        observableMovies: data.observableMovies.map((movie: any) => ({ ...movie })),
       };
 
       setUser(formattedUser);
