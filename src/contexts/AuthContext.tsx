@@ -20,7 +20,11 @@ const AuthContextProvider = ({ children }: any) => {
   }, []);
 
   const autoLoginAttempt = async () => {
+    const pause = () => new Promise(resolve => setTimeout(resolve, 1000));
+
     const { success } = await AuthAPI.checkAccess();
+
+    await pause(); // Make sure that the initial loader will be rendered beautifully
 
     if (success) setAuthenticated(true);
     setAutoLoginFinished(true);

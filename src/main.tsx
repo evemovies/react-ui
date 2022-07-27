@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import AuthContextProvider from '@/contexts/AuthContext';
 import App from './App';
+import 'antd/dist/antd.css';
 
 const AppContexts = ({ children }: React.PropsWithChildren) => <AuthContextProvider>{children}</AuthContextProvider>;
 

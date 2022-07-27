@@ -6,8 +6,6 @@ import LoginForm from './components/LoginForm';
 import LoginError from './components/LoginError';
 import { ILoginFormCallback } from './types';
 
-const test = () => new Promise((resolve, reject) => reject('hello'));
-
 function Login() {
   const { authenticated, requestOtpCode, attemptToLogin } = useContext(AuthContext);
   const [loginError, setLoginError] = useState<string | undefined>(undefined);
