@@ -1,33 +1,59 @@
-import React, { useState } from 'react';
-import { ILoginFormProps } from './types';
+import { Button, Form, Input } from 'antd';
+import { useSpring, animated } from 'react-spring';
+import MountAnimationContainer from '@/components/MountAnimationContainer';
+import { ILoginFormProps, ILoginFormFields } from './types';
 import s from './styles.module.scss';
 
 function LoginForm({ otpCodeRequested, onLogin, onRequestOtpCode }: ILoginFormProps) {
-  const [userId, setUserId] = useState('');
-  const [otpCode, setOtpCode] = useState('');
+  const [form] = Form.useForm<{ userId: string; otpCode: string }>();
+  const buttonShiftAnimation = useSpring({
+    y: otpCodeRequested ? 50 : 0,
+    config: {
+      duration: 1000,
+    },
+  });
 
-  const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const formAnimationConfig = {
+    from: { opacity: 0 },
+    enter: { opacity: 1 },
+    leave: { opacity: 0 },
+  };
 
+  const otpCodeAnimationConfig = {
+    from: { y: -50, opacity: 0 },
+    enter: { y: 0, opacity: 1 },
+    config: {
+      duration: 1000,
+    },
+  };
+
+  const handleFormSubmit = ({ userId, otpCode }: ILoginFormFields) => {
     if (otpCodeRequested) onLogin({ userId, otpCode });
     else onRequestOtpCode(userId);
   };
 
-  const requestOtpCode = () => {
-    onRequestOtpCode(userId);
-  };
-
   return (
-    <div>
-      <form onSubmit={handleFormSubmit}>
-        <input value={userId} placeholder="User ID" onChange={e => setUserId(e.target.value)} />
-        <input value={otpCode} placeholder="OTP Code" onChange={e => setOtpCode(e.target.value)} />
-        <button type="submit" onClick={requestOtpCode}>
-          Request
-        </button>
-        <button type="submit">Login</button>
-      </form>
-    </div>
+    <MountAnimationContainer visible config={formAnimationConfig}>
+      <div>
+        <Form className={s.form} form={form} onFinish={handleFormSubmit}>
+          <Form.Item name="userId">
+            <Input placeholder="User ID" />
+          </Form.Item>
+          <MountAnimationContainer visible={otpCodeRequested} config={otpCodeAnimationConfig}>
+            <Form.Item className={s.otpFieldWrapper} name="otpCode">
+              <Input placeholder="OTP Code" disabled={!otpCodeRequested} />
+            </Form.Item>
+          </MountAnimationContainer>
+          <animated.div style={buttonShiftAnimation}>
+            <Form.Item>
+              <Button className={s.submitButton} type="primary" htmlType="submit">
+                {otpCodeRequested ? 'Login' : 'Request OTP Code'}
+              </Button>
+            </Form.Item>
+          </animated.div>
+        </Form>
+      </div>
+    </MountAnimationContainer>
   );
 }
 

@@ -5,3 +5,8 @@ export interface ILoginFormProps {
   onLogin: (loginData: ILoginFormCallback) => void;
   onRequestOtpCode: (userId: string) => void;
 }
+
+export interface ILoginFormFields {
+  userId: string;
+  otpCode: string;
+}

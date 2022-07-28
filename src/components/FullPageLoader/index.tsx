@@ -1,30 +1,23 @@
-import React, { useState, useEffect } from 'react';
 import { Spin } from 'antd';
-import { useTransition, animated, AnimationResult } from 'react-spring';
+import MountAnimationContainer from '@/components/MountAnimationContainer';
 import { IFullPageLoaderProps } from './types';
 import s from './style.module.scss';
 
 function FullPageLoader({ visible, onAnimationFinished }: IFullPageLoaderProps) {
-  const transitions = useTransition(visible, {
+  const animationConfig = {
     from: { opacity: 0 },
     enter: { opacity: 1 },
     leave: { opacity: 0 },
-    onRest: ({ finished }: AnimationResult) => {
-      if (finished && onAnimationFinished) onAnimationFinished(finished);
+    config: {
+      duration: 1000,
     },
-  });
+  };
 
   return (
     <div className={s.loaderContainer}>
-      {transitions((style, item) =>
-        item ? (
-          <animated.div style={style}>
-            <Spin size="large" />
-          </animated.div>
-        ) : (
-          ''
-        )
-      )}
+      <MountAnimationContainer visible={visible} config={animationConfig} onAnimationFinished={onAnimationFinished}>
+        <Spin size="large" />
+      </MountAnimationContainer>
     </div>
   );
 }
