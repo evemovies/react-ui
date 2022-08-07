@@ -4,6 +4,8 @@ import { ErrorBoundary } from 'react-error-boundary';
 import { AuthContext } from '@/contexts/AuthContext';
 import Login from '@/views/Login';
 import Dashboard from '@/views/Dashboard';
+import Settings from '@/views/Settings';
+import AddMovie from '@/views/AddMovie';
 import PageFallback from '@/components/PageFallback';
 import Layout from '@/components/Layout';
 import FullPageLoader from '@/components/FullPageLoader';
@@ -19,6 +21,22 @@ function App() {
         element={
           <ErrorBoundary FallbackComponent={PageFallback}>
             <Dashboard />
+          </ErrorBoundary>
+        }
+      />
+      <Route
+        path="/add-movie"
+        element={
+          <ErrorBoundary FallbackComponent={PageFallback}>
+            <AddMovie />
+          </ErrorBoundary>
+        }
+      />
+      <Route
+        path="/settings"
+        element={
+          <ErrorBoundary FallbackComponent={PageFallback}>
+            <Settings />
           </ErrorBoundary>
         }
       />
@@ -46,7 +64,7 @@ function App() {
   return (
     <div className="app">
       <Routes>
-        <Route path="/" element={<Layout authenticated={authenticated} />}>
+        <Route path="/" element={<Layout />}>
           {authenticated ? renderAuthorizedRoutes() : renderUnauthorizedRoutes()}
         </Route>
       </Routes>

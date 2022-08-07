@@ -2,6 +2,7 @@ import { Button, Form, Input } from 'antd';
 import { useSpring, animated } from 'react-spring';
 import MountAnimationContainer from '@/components/MountAnimationContainer';
 import { ILoginFormProps, ILoginFormFields } from './types';
+import { animations } from './helpers';
 import s from './styles.module.scss';
 
 function LoginForm({ otpCodeRequested, onLogin, onRequestOtpCode }: ILoginFormProps) {
@@ -13,33 +14,19 @@ function LoginForm({ otpCodeRequested, onLogin, onRequestOtpCode }: ILoginFormPr
     },
   });
 
-  const formAnimationConfig = {
-    from: { opacity: 0 },
-    enter: { opacity: 1 },
-    leave: { opacity: 0 },
-  };
-
-  const otpCodeAnimationConfig = {
-    from: { y: -50, opacity: 0 },
-    enter: { y: 0, opacity: 1 },
-    config: {
-      duration: 1000,
-    },
-  };
-
   const handleFormSubmit = ({ userId, otpCode }: ILoginFormFields) => {
     if (otpCodeRequested) onLogin({ userId, otpCode });
     else onRequestOtpCode(userId);
   };
 
   return (
-    <MountAnimationContainer visible config={formAnimationConfig}>
+    <MountAnimationContainer visible config={animations.formConfig}>
       <div>
         <Form className={s.form} form={form} onFinish={handleFormSubmit}>
           <Form.Item name="userId">
             <Input placeholder="User ID" />
           </Form.Item>
-          <MountAnimationContainer visible={otpCodeRequested} config={otpCodeAnimationConfig}>
+          <MountAnimationContainer visible={otpCodeRequested} config={animations.otpCodeConfig}>
             <Form.Item className={s.otpFieldWrapper} name="otpCode">
               <Input placeholder="OTP Code" disabled={!otpCodeRequested} />
             </Form.Item>

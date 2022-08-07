@@ -3,7 +3,8 @@ import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import AuthContextProvider from '@/contexts/AuthContext';
 import App from './App';
-import 'antd/dist/antd.variable.css';
+// import 'antd/dist/antd.variable.css';
+import 'antd/dist/antd.css';
 import 'normalize.css/normalize.css';
 import './style.scss';
 

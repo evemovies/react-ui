@@ -7,7 +7,6 @@ export interface IAPIResponse {
 }
 
 const instance = axios.create({
-  // baseURL: import.meta.env.VITE_API_BASE_URL,
   baseURL: '/',
 });
 
@@ -23,7 +22,7 @@ instance.interceptors.response.use(
       data: {
         success: false,
         data: {},
-        error: error.response.data.error,
+        error: error.response.data.error || 'Unknown error',
       },
     };
   }
