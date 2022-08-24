@@ -1,0 +1,9 @@
+.moviesList {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 240px);
+  grid-column-gap: 30px;
+  grid-row-gap: 30px;
+  justify-content: space-around;
+  height: 100%;
+  overflow-y: scroll;
+}

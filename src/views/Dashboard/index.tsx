@@ -1,9 +1,11 @@
+import { useContext } from 'react';
+import { UserContext } from '@/contexts/UserContext';
+import MoviesList from '@/components/movies/MoviesList';
+
 function Dashboard() {
-  return (
-    <div>
-      <h1>Dashboard</h1>
-    </div>
-  );
+  const { user } = useContext(UserContext);
+
+  return <MoviesList movies={user.observableMovies} />;
 }
 
 export default Dashboard;
