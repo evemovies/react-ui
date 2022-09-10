@@ -6,6 +6,7 @@ import Login from '@/views/Login';
 import Dashboard from '@/views/Dashboard';
 import Settings from '@/views/Settings';
 import AddMovie from '@/views/AddMovie';
+import Movie from '@/views/Movie';
 import PageFallback from '@/components/PageFallback';
 import Layout from '@/components/Layout';
 import FullPageLoader from '@/components/FullPageLoader';
@@ -21,6 +22,14 @@ function App() {
         element={
           <ErrorBoundary FallbackComponent={PageFallback}>
             <Dashboard />
+          </ErrorBoundary>
+        }
+      />
+      <Route
+        path="/movie/:movieId"
+        element={
+          <ErrorBoundary FallbackComponent={PageFallback}>
+            <Movie />
           </ErrorBoundary>
         }
       />

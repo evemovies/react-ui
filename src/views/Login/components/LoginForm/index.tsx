@@ -3,7 +3,7 @@ import { useSpring, animated } from 'react-spring';
 import MountAnimationContainer from '@/components/MountAnimationContainer';
 import { ILoginFormProps, ILoginFormFields } from './types';
 import { animations } from './helpers';
-import s from './styles.module.scss';
+import s from './style.module.scss';
 
 function LoginForm({ otpCodeRequested, onLogin, onRequestOtpCode }: ILoginFormProps) {
   const [form] = Form.useForm<{ userId: string; otpCode: string }>();

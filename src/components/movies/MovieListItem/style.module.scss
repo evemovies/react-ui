@@ -1,0 +1,23 @@
+.movieCard {
+  :global {
+    .ant-card-cover {
+      max-height: 300px;
+      overflow: hidden;
+
+      img {
+        position: relative;
+        height: 300px;
+        object-fit: cover;
+        transition: transform 0.5s ease-out;
+      }
+    }
+  }
+
+  &:hover {
+    :global {
+      .ant-card-cover img {
+        transform: scale(1.2);
+      }
+    }
+  }
+}
